@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Italian Horizon - Fast Edition</title>
+    <title>TODO管理 - Italian Horizon</title>
     
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%20%2220%22 fill=%22%232e7d32%22/><path d=%22M30 50l15 15 30-30%22 stroke=%22white%22 stroke-width=%2210%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;500&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
@@ -12,7 +14,6 @@
         :root {
             --bg-1: url('https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=1600&auto=format&fit=crop'); 
             --bg-2: url('https://images.unsplash.com/photo-1528114039593-4366cc08227d?q=80&w=1600&auto=format&fit=crop'); 
-            /* 3枚目：引きのローマ街並みパノラマ */
             --bg-3: url('https://images.unsplash.com/photo-1531572753322-ad063cecc140?q=80&w=1600&auto=format&fit=crop'); 
         }
 
@@ -27,7 +28,6 @@
         .bg-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover; background-position: center; background-attachment: fixed;
-            /* 切り替え時間を0.5秒に短縮 */
             transition: opacity 0.5s ease-out; 
         }
         .bg-back { z-index: -2; opacity: 1; }
@@ -44,7 +44,7 @@
             width: 35px; height: 35px; border-radius: 50%; border: 2px solid white;
             cursor: pointer; transition: 0.2s; background-size: cover; background-position: center;
         }
-        .bg-btn:active { transform: scale(0.9); } /* 押した感を出す */
+        .bg-btn:active { transform: scale(0.9); }
 
         .board-container {
             display: flex; gap: 20px; width: 100%; max-width: 1200px;
@@ -62,6 +62,7 @@
 
         h2 { font-size: 0.8rem; text-align: center; letter-spacing: 0.4em; margin-bottom: 25px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 
+        /* 入力エリアの微調整 */
         .input-group { display: flex; background: rgba(255, 255, 255, 0.9); border-radius: 16px; padding: 5px; margin-bottom: 20px; }
         input { flex: 1; padding: 12px; border: none; background: transparent; outline: none; font-family: inherit; }
         .add-btn { background: none; border: none; font-size: 1.8rem; color: #555; cursor: pointer; padding-right: 10px; }
@@ -129,7 +130,7 @@
         <div class="column" id="col-today">
             <h2>TODAY</h2>
             <div class="input-group">
-                <input type="text" placeholder="Andiamo! (さあやろう)">
+                <input type="text" placeholder="What's the plan?">
                 <button class="add-btn" onclick="addNewTask('today')">+</button>
             </div>
             <ul class="task-list" id="list-today"></ul>
@@ -137,7 +138,7 @@
         <div class="column" id="col-tomorrow">
             <h2>TOMORROW</h2>
             <div class="input-group">
-                <input type="text" placeholder="Domani... (明日の予定)">
+                <input type="text" placeholder="Next step?">
                 <button class="add-btn" onclick="addNewTask('tomorrow')">+</button>
             </div>
             <ul class="task-list" id="list-tomorrow"></ul>
@@ -145,7 +146,7 @@
         <div class="column" id="col-someday">
             <h2>SOMEDAY</h2>
             <div class="input-group">
-                <input type="text" placeholder="Un giorno... (いつか)">
+                <input type="text" placeholder="Future ideas...">
                 <button class="add-btn" onclick="addNewTask('someday')">+</button>
             </div>
             <ul class="task-list" id="list-someday"></ul>
@@ -158,7 +159,7 @@
         <div class="archive-content">
             <span class="close-archive" onclick="toggleArchive(false)">×</span>
             <div class="archive-header">
-                <h3 style="letter-spacing: 0.3em;">COMPLETED</h3>
+                <h3 style="letter-spacing: 0.3em;">TODO管理 - 完了済み</h3>
             </div>
             <ul id="archive-list" class="archive-list"></ul>
             <p id="empty-msg" style="text-align: center; opacity: 0.5; margin-top: 50px; display: none;">アーカイブは空です</p>
@@ -181,7 +182,6 @@
             bgFront.style.backgroundImage = `var(--bg-${num})`;
             bgFront.style.opacity = 1;
             
-            // 0.5秒後に確定させる（アニメーション時間に合わせる）
             setTimeout(() => {
                 bgBack.style.backgroundImage = `var(--bg-${num})`;
                 bgFront.style.opacity = 0;
@@ -282,7 +282,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // 最初は必ず1枚目（ベネチア）を表示
             document.querySelector('.bg-back').style.backgroundImage = `var(--bg-1)`;
             columnIds.forEach(id => {
                 const saved = JSON.parse(localStorage.getItem(`italy-tasks-${id}`)) || [];
